@@ -6,7 +6,7 @@ $prefix = $argv[2];
 $stdin = fopen('php://stdin', 'r');
 ob_implicit_flush(true);
 
-$ch = curl_init();
+$ch = null;
 $count = 0;
 
 while ($line = fgets($stdin)) {
@@ -15,8 +15,6 @@ while ($line = fgets($stdin)) {
   }  
   loggly_log("${prefix} ${line}");
 }
-
-curl_close($ch);
 
 exit();
 
