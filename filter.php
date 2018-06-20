@@ -15,7 +15,7 @@ $access_key = $_SERVER['HTTP_X_ACCESS_KEY'];
 error_log("${pid} X-Forwarded-For " . $_SERVER['HTTP_X_FORWARDED_FOR']);
 $forward_count = count(explode(' ', $_SERVER['HTTP_X_FORWARDED_FOR']));
 
-$url = 'https://logs-01.loggly.com/inputs/' . getenv('LOGGLY_TOKEN') . '/tag/' . $_SERVER['SERVER_NAME'] . '/';
+// $url = 'https://logs-01.loggly.com/inputs/' . getenv('LOGGLY_TOKEN') . '/tag/' . $_SERVER['SERVER_NAME'] . '/';
 
 // IE Edge 不可
 if (preg_match('/(Trident|Edge)/', $_SERVER['HTTP_USER_AGENT']) || $forward_count != 3 || $access_key != $md5_hash)
@@ -32,16 +32,7 @@ if (preg_match('/(Trident|Edge)/', $_SERVER['HTTP_USER_AGENT']) || $forward_coun
     $_SERVER['REQUEST_URI'] . ' ' .
     $_SERVER['HTTP_USER_AGENT'];
 
-  $context = [
-    "http" => [
-      "method" => "POST",
-      "header" => [
-        "Content-Type: text/plain"
-        ],
-      "content" => $message
-      ]];
-
-  $res = file_get_contents($url, false, stream_context_create($context));
+  loggly_log($message);
 
   error_log("${pid} ${res}");
     
@@ -160,18 +151,29 @@ $message =
   $_SERVER['REQUEST_URI'] . ' ' .
   $_SERVER['HTTP_USER_AGENT'];
 
-$context = [
-  "http" => [
-    "method" => "POST",
-    "header" => [
-      "Content-Type: text/plain"
-      ],
-    "content" => $message
-    ]];
-
-$res = file_get_contents($url, false, stream_context_create($context));
+loggly_log($message);
 
 error_log("${pid} ${res}");
 
 error_log("${pid} ***** FILTER MESSAGE FINISH ***** " . $_SERVER['REQUEST_URI']);
+
+function loggly_log($message_) {
+  // $url = 'https://logs-01.loggly.com/inputs/' . getenv('LOGGLY_TOKEN') . '/tag/' . getenv('HEROKU_APP_NAME') . '/';
+  $url = 'https://logs-01.loggly.com/inputs/' . getenv('LOGGLY_TOKEN') . '/tag/' . $_SERVER['SERVER_NAME'] . ',filter.php/';
+  
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+  curl_setopt($ch, CURLOPT_ENCODING, '');
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+  curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+  curl_setopt($ch, CURLOPT_POST, TRUE);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: text/plain']);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $message_);
+  curl_exec($ch);
+  curl_close($ch);
+  
+  $count = ($count + 1) % 10;
+}
 ?>
