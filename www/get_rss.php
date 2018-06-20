@@ -52,5 +52,8 @@ $xml_root_text = <<< __HEREDOC__
 __HEREDOC__;
 
 header('Content-Type: application/xml; charset=UTF-8');
-echo str_replace('__ITEMS__', implode("\r\n", $items), $xml_root_text);
+header('Content-Encoding: gzip');
+$contents_gzip = gzencode(str_replace('__ITEMS__', implode("\r\n", $items), $xml_root_text), 9);
+header('Content-Length: ' . strlen($contents_gzip));
+echo $contents_gzip;
 ?>
