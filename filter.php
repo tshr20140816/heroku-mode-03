@@ -15,8 +15,6 @@ $access_key = $_SERVER['HTTP_X_ACCESS_KEY'];
 error_log("${pid} X-Forwarded-For " . $_SERVER['HTTP_X_FORWARDED_FOR']);
 $forward_count = count(explode(' ', $_SERVER['HTTP_X_FORWARDED_FOR']));
 
-// $url = 'https://logs-01.loggly.com/inputs/' . getenv('LOGGLY_TOKEN') . '/tag/' . $_SERVER['SERVER_NAME'] . '/';
-
 // IE Edge 不可
 if (preg_match('/(Trident|Edge)/', $_SERVER['HTTP_USER_AGENT']) || $forward_count != 3 || $access_key != $md5_hash)
 {
@@ -158,7 +156,6 @@ error_log("${pid} ${res}");
 error_log("${pid} ***** FILTER MESSAGE FINISH ***** " . $_SERVER['REQUEST_URI']);
 
 function loggly_log($message_) {
-  // $url = 'https://logs-01.loggly.com/inputs/' . getenv('LOGGLY_TOKEN') . '/tag/' . getenv('HEROKU_APP_NAME') . '/';
   $url = 'https://logs-01.loggly.com/inputs/' . getenv('LOGGLY_TOKEN') . '/tag/' . $_SERVER['SERVER_NAME'] . ',filter.php/';
   
   $ch = curl_init();
