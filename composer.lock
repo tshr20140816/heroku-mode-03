@@ -60,6 +60,7 @@
     "platform": {
         "php": ">=7.2.3",
         "ext-apcu": "*",
+        "ext-gd": "*",
         "ext-mbstring": "*"
     },
     "platform-dev": []
