@@ -8,6 +8,7 @@ httpd -V
 httpd -M
 php --version
 whereis php
+php -m
 cat /proc/version
 curl --version
 printenv
