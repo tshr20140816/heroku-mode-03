@@ -56,4 +56,23 @@ header('Content-Encoding: gzip');
 $contents_gzip = gzencode(str_replace('__ITEMS__', implode("\r\n", $items), $xml_root_text), 9);
 header('Content-Length: ' . strlen($contents_gzip));
 echo $contents_gzip;
+
+exit();
+
+function get_contents($url_) {
+  $pid = getmypid();
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url_); 
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+  curl_setopt($ch, CURLOPT_ENCODING, "");
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+  curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+  curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; rv:56.0) Gecko/20100101 Firefox/60.0');
+  $contents = curl_exec($ch);
+  $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);  
+  curl_close($ch);
+  
+  return [$contents, $http_code];
+}
 ?>
