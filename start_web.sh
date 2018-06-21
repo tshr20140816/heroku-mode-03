@@ -13,7 +13,7 @@ cat /proc/version
 curl --version
 printenv
 
-netstat -ant
+ss
 
 if [ ! -v MODE ]; then
   echo "Error : MODE not defined."
