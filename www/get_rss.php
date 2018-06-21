@@ -1,5 +1,7 @@
 <?php
 
+$pid = getmypid();
+
 $template_number = $_GET['n'];
 
 $data = explode("\n", file_get_contents(getenv('RSS_TEMPLATE_URL') . "${template_number}.txt"));
@@ -18,6 +20,7 @@ $items_template = '<item><title>__TITLE__</title><link>__LINK__</link><descripti
 //$html = mb_convert_encoding(file_get_contents($url), 'UTF-8', $encoding);
 list($contents, $http_code) = get_contents($url);
 if ($http_code != '200') {
+  loggly_log("ERROR : HTTP STATUS ${http_code} ${url}");
   exit();
 }
 $html = mb_convert_encoding($contents, 'UTF-8', $encoding);
@@ -27,6 +30,8 @@ $rc = preg_match($global_pattern, $html, $matches1);
 $items = array();
 
 $rc = preg_match_all($item_pattern, $matches1[1], $matches2, PREG_SET_ORDER);
+
+loggly_log("ITEM COUNT : ${rc} ${url}");
 
 for ($i = 0; $i < $rc; $i++) {
   $title = $item_title;
@@ -79,5 +84,24 @@ function get_contents($url_) {
   curl_close($ch);
   
   return [$contents, $http_code];
+}
+
+function loggly_log($message_) {
+  $pid = getmypid();
+  error_log("${pid} ${message_}");
+  
+  $url_loggly = 'https://logs-01.loggly.com/inputs/' . getenv('LOGGLY_TOKEN') . '/tag/get_rss,' . getenv('HEROKU_APP_NAME') . '/';
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url_loggly);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+  curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+  curl_setopt($ch, CURLOPT_ENCODING, '');
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+  curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+  curl_setopt($ch, CURLOPT_POST, TRUE);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: text/plain']);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $message_);
+  curl_exec($ch);
+  curl_close($ch);
 }
 ?>
