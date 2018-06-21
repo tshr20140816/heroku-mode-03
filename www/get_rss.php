@@ -15,7 +15,12 @@ $item_description = $data[8];
 
 $items_template = '<item><title>__TITLE__</title><link>__LINK__</link><description>__DESCRIPTION__</description><pubDate/></item>';
 
-$html = mb_convert_encoding(file_get_contents($url), 'UTF-8', $encoding);
+//$html = mb_convert_encoding(file_get_contents($url), 'UTF-8', $encoding);
+list($contents, $http_code) = get_contents($url);
+if ($http_code != '200') {
+  exit();
+}
+$html = mb_convert_encoding($contents, 'UTF-8', $encoding);
 
 $rc = preg_match($global_pattern, $html, $matches1);
 
