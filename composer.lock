@@ -58,7 +58,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2.3",
+        "php": ">=7.2.6",
         "ext-gd": "*",
         "ext-apcu": "*",
         "ext-mbstring": "*"
