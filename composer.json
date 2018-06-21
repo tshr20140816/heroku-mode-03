@@ -4,6 +4,7 @@
     "php": ">=7.2.6",
     "ext-gd": "*",
     "ext-apcu": "*",
+    "ext-memcached": "*",
     "ext-mbstring": "*"
   }
   ,
