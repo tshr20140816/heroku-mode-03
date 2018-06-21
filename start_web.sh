@@ -13,7 +13,7 @@ cat /proc/version
 curl --version
 printenv
 
-ss
+ss -lnt4
 
 if [ ! -v MODE ]; then
   echo "Error : MODE not defined."
