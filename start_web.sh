@@ -13,7 +13,8 @@ cat /proc/version
 curl --version
 printenv
 
-composer update
+cat composer.lock | grep version
+composer update > /dev/null
 cat composer.lock | grep version
 
 ss -lnt4
