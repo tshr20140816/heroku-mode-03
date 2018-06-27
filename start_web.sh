@@ -13,9 +13,9 @@ cat /proc/version
 curl --version
 printenv
 
-cat composer.lock | grep version
+current_version=$(cat composer.lock | grep version | awk '{print $2}' | tr -d ,)
 composer update > /dev/null 2>&1
-cat composer.lock | grep version
+new_version=$(cat composer.lock | grep version | awk '{print $2}' | tr -d ,)
 
 ss -lnt4
 
@@ -45,6 +45,8 @@ curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} ${ph
 
 apache_version="$(httpd -v)"
 curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} ${apache_version}" ${url}
+
+curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} ${current_version} ${new_version}" ${url}
 
 echo ${HEROKU_APP_NAME}
 echo ${HEROKU_RELEASE_CREATED_AT}
