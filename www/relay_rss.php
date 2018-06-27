@@ -22,7 +22,7 @@ list($contents, $http_code, $timestamp, $content_type) = get_contents($url, FALS
 // error_log($http_code);
 // error_log($contents);
 
-mkdir('/tmp/cache_rss');
+@mkdir('/tmp/cache_rss');
 $cache_file_name = '/tmp/cache_rss/' . urlencode($url);
 
 if ($http_code == '304') {
