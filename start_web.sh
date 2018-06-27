@@ -49,7 +49,7 @@ curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} Apac
 apache_version="$(httpd -v)"
 curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} ${apache_version}" ${url}
 
-curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} heroku/heroku-buildpack-php ${current_version} ${new_version}" ${url}
+curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} heroku/heroku-buildpack-php current ${current_version} new ${new_version}" ${url}
 
 echo ${HEROKU_APP_NAME}
 echo ${HEROKU_RELEASE_CREATED_AT}
