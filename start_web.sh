@@ -126,8 +126,6 @@ if [ ${MODE} = 'APACHE' ]; then
   
   curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} * ${HOME_FQDN} ${HOME_IP_ADDRESS} * ${last_update}"  ${url}
 
-  mkdir -m 666 /tmp/cache_rss
-
   htpasswd -c -b .htpasswd ${BASIC_USER} ${BASIC_PASSWORD}
 
   export LD_LIBRARY_PATH=/tmp/usr/lib
