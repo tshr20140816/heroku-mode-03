@@ -43,8 +43,9 @@ curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} ${mo
 php_version="$(php -v | head -n 1)"
 curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} ${php_version}" ${url}
 
+apache_lastest_version=$(curl https://github.com/apache/httpd/releases | grep tag-name | head -n 1 | sed -e 's/<[^>]*>//g' | awk '{print $1}')
 apache_version="$(httpd -v)"
-curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} ${apache_version}" ${url}
+curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} ${apache_version} ${apache_lastest_version}" ${url}
 
 curl -i -H 'content-type:text/plain' -d "S ${HEROKU_APP_NAME} ${IP_ADDRESS} ${current_version} ${new_version}" ${url}
 
