@@ -22,7 +22,7 @@ list($contents, $http_code, $timestamp, $content_type) = get_contents($url, FALS
 // error_log($http_code);
 // error_log($contents);
 
-$cache_file_name = '/tmp/' . urlencode($url);
+$cache_file_name = '/tmp/cache_rss/' . urlencode($url);
 
 if ($http_code == '304') {
   header('HTTP/1.1 304 Not Modified');
