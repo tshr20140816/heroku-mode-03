@@ -5,7 +5,8 @@
     "ext-gd": "*",
     "ext-apcu": "*",
     "ext-memcached": "*",
-    "ext-mbstring": "*"
+    "ext-mbstring": "*",
+    "ext-pcntl": "*"
   }
   ,
   "require-dev":
