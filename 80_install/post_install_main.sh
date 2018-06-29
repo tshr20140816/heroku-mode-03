@@ -5,8 +5,6 @@ set -x
 date
 start_date=$(date)
 
-apt install gcc
-
 export HOME2=${PWD}
 
 cat /proc/version
