@@ -11,8 +11,7 @@
   ,
   "require-dev":
   {
-    "heroku/heroku-buildpack-php": "*",
-    "heroku/heroku-buildpack-apt": "*"
+    "heroku/heroku-buildpack-php": "*"
   }
   ,
   "scripts":
